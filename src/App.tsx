@@ -1,17 +1,17 @@
 import React from "react";
 import InputForm from "./components/Form";
 
-import axios from "axios";
+import { checkText } from "./api";
 
 function App() {
   const handleSubmit = (comment: string) => {
     console.log(comment);
-    // This is where we will add our
-    // Perspective API call later on!
+    checkText(comment);
   };
+
   return (
     <div className="App">
-      <InputForm onSubmit={handleSubmit} />
+      <InputForm handleSubmit={handleSubmit} />
     </div>
   );
 }

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-export const InputForm = (onSubmit: any) => {
+interface Props {
+  handleSubmit: (text: string) => void;
+}
+
+export const InputForm = ({ handleSubmit }: Props) => {
   const [comment, setComment] = useState("");
   return (
     <div>
@@ -8,7 +12,7 @@ export const InputForm = (onSubmit: any) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit(comment);
+          handleSubmit(comment);
         }}
         className="CommentForm"
       >
