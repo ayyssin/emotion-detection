@@ -10,9 +10,13 @@ export const checkText = (text: string) => {
     comment: {
       text: text,
     },
-    languages: ["en", "ru"],
+    languages: ["ru"],
     requestedAttributes: {
       IDENTITY_ATTACK: {},
+      SEVERE_TOXICITY: {},
+      INSULT: {},
+      PROFANITY: {},
+      TOXICITY: {},
     },
   };
   return axios.post(API_URL, body).then((res) => console.log(res));
