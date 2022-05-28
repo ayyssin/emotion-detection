@@ -13,6 +13,7 @@ export const InputForm = ({ handleSubmit }: Props) => {
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(comment);
+          setComment("");
         }}
         className="CommentForm"
       >
