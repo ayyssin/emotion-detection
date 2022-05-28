@@ -19,5 +19,5 @@ export const checkText = (text: string) => {
       TOXICITY: {},
     },
   };
-  return axios.post(API_URL, body);
+  return axios.post(API_URL, body).then((res) => res.data);
 };
