@@ -29,6 +29,7 @@ const AdminPost = ({ username, content, analysis }: Props) => {
           sx={{
             width: 30,
             height: 30,
+            ml: 1,
           }}
         />
       )}
