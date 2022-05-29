@@ -1,4 +1,5 @@
 export interface Post {
+  post_id?: string;
   username?: string;
   content: string;
   analysis: string;

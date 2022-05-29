@@ -86,9 +86,11 @@ export const InputForm = () => {
 
     if (username!! && text!!) {
       handleCheck(text);
+      const post_id = '78';
 
       //loader
       const submittedPost: Post = {
+        post_id: post_id,
         username: username,
         content: text,
         analysis: post!.analysis,
@@ -103,12 +105,13 @@ export const InputForm = () => {
     }
   };
 
-  const [data, setData] = useState('null');
-
   useEffect(() => {
     fetch("/gets")
         .then((res) => res.json())
-        .then((data) => setData(data.message));
+        .then((data) => {
+          const myData = data["message"].data;
+          setFeed(myData);
+        });
   }, []);
 
 
@@ -214,7 +217,7 @@ export const InputForm = () => {
                 />
               </Tooltip>
             </Box>
-          ) : post?.analysis === "flag" ? (
+          ) : (comment !== "" && post?.analysis === "flag") ? (
             <Box sx={{ mx: 2 }}>
               <Tooltip title="Ваш тон выглядит оскорбительно, настоятельно рекомендуем избегать данных высказываний.">
                 <img

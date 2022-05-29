@@ -6,7 +6,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Post } from "../types";
 import AdminPost from "./AdminPost";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -40,6 +40,17 @@ const meta: Post[] = [
 ];
 
 const Admin = () => {
+  const [feed, setFeed] = useState<Post[]>([]);
+
+  useEffect(() => {
+    fetch("/gets")
+        .then((res) => res.json())
+        .then((data) => {
+          const myData = data["message"].data;
+          setFeed(myData);
+        });
+  }, []);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -80,7 +91,7 @@ const Admin = () => {
             mt: 5,
           }}
         >
-          {meta.map((obj: Post) => {
+          {feed.map((obj: Post) => {
             return (
               <AdminPost
                 username={obj.username}
