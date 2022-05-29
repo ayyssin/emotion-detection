@@ -6,12 +6,16 @@ import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 
 import { checkText } from "../api";
-import { Post, PostAnalysis } from "../types";
+import { Post } from "../types";
+import PostCard from "./Post";
 
 export const InputForm = () => {
   const [comment, setComment] = useState("");
+  const [username, setUsername] = useState("");
 
   const [post, setPost] = useState<Post>();
+  const [sentPost, setSentPost] = useState<Post>();
+  const [feed, setFeed] = useState<Post[]>([]);
 
   const handleCheck = async (comment: string) => {
     const analysis = await checkText(comment);
@@ -22,28 +26,33 @@ export const InputForm = () => {
         : analysis!.attributeScores.TOXICITY.summaryScore.value >= 0.5
         ? setPost({ content: comment, analysis: "flag" })
         : setPost({ content: comment, analysis: "warning" });
-
-      console.log(post);
     }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    //get post variable and send it to DB
-
     e.preventDefault();
 
     const data = new FormData(e.currentTarget);
     const username = data.get("username")?.toString();
+    const text = data.get("text")?.toString();
 
-    const temp = post;
+    if (username!! && text!!) {
+      handleCheck(text);
 
-    setPost({
-      username: username,
-      content: temp!.content,
-      analysis: temp!.analysis,
-    });
+      //loader
+      const submittedPost: Post = {
+        username: username,
+        content: text,
+        analysis: post!.analysis,
+      };
 
-    console.log("submit", post);
+      setSentPost(submittedPost);
+
+      setFeed([...feed, submittedPost]);
+
+      setUsername("");
+      setComment("");
+    }
   };
   return (
     <div>
@@ -55,13 +64,18 @@ export const InputForm = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h5" sx={{ color: "primary" }}>
+          <Typography variant="h5" sx={{ color: "primary", mt: 2 }}>
             Emotion Detection Algorithm
           </Typography>
           <TextField
             name="username"
             label="Имя пользователя"
-            sx={{ my: 2, width: 500 }}
+            sx={{ mt: 4, mb: 2, width: 500 }}
+            required
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setUsername(e.target.value);
+            }}
+            value={username}
           />
 
           <TextField
@@ -83,12 +97,15 @@ export const InputForm = () => {
             sx={{ my: 2, width: 500 }}
             rows={5}
             color={
-              post?.analysis === "warning"
-                ? "secondary"
-                : post?.analysis === "flag"
-                ? "error"
+              comment !== ""
+                ? post?.analysis === "warning"
+                  ? "secondary"
+                  : post?.analysis === "flag"
+                  ? "error"
+                  : "primary"
                 : "primary"
             }
+            required
           />
         </Box>
 
@@ -99,7 +116,7 @@ export const InputForm = () => {
             justifyContent: "center",
           }}
         >
-          {post?.analysis === "warning" ? (
+          {comment !== "" && post?.analysis === "warning" ? (
             <Box sx={{ mx: 2 }}>
               <Tooltip title="Ваш текст может ранить чьи-то чувства, попробуйте перефразировать">
                 <img
@@ -128,15 +145,34 @@ export const InputForm = () => {
             variant="contained"
             sx={{
               backgroundColor:
-                post?.analysis === "warning"
-                  ? "#7534FE"
-                  : post?.analysis === "flag"
-                  ? "red"
+                comment !== ""
+                  ? post?.analysis === "warning"
+                    ? "#7534FE"
+                    : post?.analysis === "flag"
+                    ? "red"
+                    : "primary"
                   : "primary",
             }}
           >
             Отправить пост
           </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {feed.map((obj: Post) => {
+            return (
+              <PostCard
+                username={obj.username!}
+                content={obj.content}
+                analysis={obj.analysis}
+              />
+            );
+          })}
         </Box>
       </Box>
     </div>
