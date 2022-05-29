@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -102,6 +102,15 @@ export const InputForm = () => {
       setComment("");
     }
   };
+
+  const [data, setData] = useState('null');
+
+  useEffect(() => {
+    fetch("/gets")
+        .then((res) => res.json())
+        .then((data) => setData(data.message));
+  }, []);
+
 
   return (
     <div>

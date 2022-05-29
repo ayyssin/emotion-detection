@@ -1,0 +1,17 @@
+{
+  "name": "emotion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index1.js",
+  "scripts": {
+    "start": "node server/index1.js",
+    "build": "cd ../client && npm install && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "pg": "^8.7.3"
+  }
+}

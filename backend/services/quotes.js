@@ -5,8 +5,7 @@ const config = require('../config');
 async function getMultiple(page = 1) {
     const offset = helper.getOffset(page, config.listPerPage);
     const rows = await db.query(
-        'SELECT id, quote, author FROM quote OFFSET $1 LIMIT $2',
-        [offset, config.listPerPage]
+        'SELECT * FROM posts;'
     );
     const data = helper.emptyOrRows(rows);
     const meta = {page};
@@ -17,15 +16,15 @@ async function getMultiple(page = 1) {
     }
 }
 
-async function create(quote) {
+async function create(post) {
     const result = await db.query(
-        'INSERT INTO quote(quote, author) VALUES ($1, $2) RETURNING *',
-        [quote.quote, quote.author]
+        'INSERT INTO posts(post_id,username,content,analysis) VALUES ($1, $2, $3, $4)',
+        [post.post_id ?? '678678', post.username ?? 'yyyuyuy', post.content, post.analysis]
     );
-    let message = 'Error in creating quote';
+    let message = 'Error in creating post';
 
     if (result.length) {
-        message = 'Quote created successfully';
+        message = 'post created successfully';
     }
 
     return {message};
