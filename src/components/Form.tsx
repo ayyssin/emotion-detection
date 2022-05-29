@@ -96,30 +96,29 @@ export const InputForm = () => {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "flex-end",
-            mr: 14,
+            justifyContent: "center",
           }}
         >
           {post?.analysis === "warning" ? (
-            <>
+            <Box sx={{ mx: 2 }}>
               <Tooltip title="Ваш текст может ранить чьи-то чувства, попробуйте перефразировать">
                 <img
                   src={require("../icons/warning.png")}
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                 />
               </Tooltip>
-            </>
+            </Box>
           ) : post?.analysis === "flag" ? (
-            <>
+            <Box sx={{ mx: 2 }}>
               <Tooltip title="Ваш тон выглядит оскорбительно, настоятельно рекомендуем избегать данных высказываний.">
                 <img
                   src={require("../icons/flag.jpg")}
-                  width={40}
-                  height={40}
+                  width={50}
+                  height={50}
                 />
               </Tooltip>
-            </>
+            </Box>
           ) : (
             <></>
           )}
@@ -134,10 +133,9 @@ export const InputForm = () => {
                   : post?.analysis === "flag"
                   ? "red"
                   : "primary",
-              mx: 1,
             }}
           >
-            Пост
+            Отправить пост
           </Button>
         </Box>
       </Box>
